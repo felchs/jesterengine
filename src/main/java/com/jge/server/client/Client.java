@@ -41,11 +41,13 @@ import com.jge.server.utils.MappingUtil;
  * {@link Client} which is an authenticated {@link ClientSession} also inserted into a {@link Space}
  *  
  */
-public class Client implements MessageSender {
+public class Client {
 	/**
 	 * Global client prefix name
 	 */
 	public static final String CLIENT_PREFIX = "Client_";
+
+	public static final String ROBOT_PREFIX = "robot";
 	
 	/**
 	 * Gets a {@link Client} with a session name

@@ -28,25 +28,35 @@ import com.jge.server.net.Delivery;
 import com.jge.server.net.session.ClientSession;
 import com.jge.server.space.Space;
 import com.jge.server.space.SpaceChannelReceiver;
-import com.jge.server.space.SpaceIdMapping;
 import com.jge.server.space.SpaceMessageReceiver;
 import com.jge.server.space.game.GameFactory;
 import com.jge.server.space.game.GameSpace;
 import com.jge.server.utils.DGSLogger;
 
 public class MatchMakerSpace extends Space {
-	protected SpaceIdMapping spaceIdMapping;
+	
+	private static ConcurrentHashMap<Integer, MatchMakerSpace> matchMakerMapById = new ConcurrentHashMap<>();
+	
+	
+	public static MatchMakerSpace getMatchMakerById(int id) {
+		MatchMakerSpace matchMakerSpace = matchMakerMapById.get(id);
+		if (matchMakerSpace == null) {
+			matchMakerSpace = new MatchMakerSpace(id);
+		}
+		
+		return matchMakerSpace;
+	}
 
+	
+	///////////////////////////////////////////////////////////////////////////
+	
 	private String matchChatChannelName;
 	
 	private ConcurrentHashMap<String, GameSpace> openGames = new ConcurrentHashMap<String, GameSpace>();
 	
 	
-	public MatchMakerSpace(int id, SpaceIdMapping spaceIdMapping) {
+	public MatchMakerSpace(int id) {
 		super(id);
-		
-		this.spaceIdMapping = spaceIdMapping;
-		
 	}
 	
 	private String getMatchAndGameKey(byte matchType, byte gameType) {
@@ -77,7 +87,7 @@ public class MatchMakerSpace extends Space {
 
 	@Override
 	public SpaceMessageReceiver createMessageReceiver() {
-		return new MatchMakerMessageReceiver(this, spaceIdMapping);
+		return new MatchMakerMessageReceiver(this);
 	}
 
 	@Override

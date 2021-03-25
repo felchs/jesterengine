@@ -21,7 +21,6 @@ import java.nio.ByteBuffer;
 import java.util.logging.Level;
 
 import com.jge.server.client.Client;
-import com.jge.server.client.MessageSender;
 import com.jge.server.net.Channel;
 import com.jge.server.space.Space;
 import com.jge.server.space.game.GameSpace;
@@ -38,8 +37,8 @@ public abstract class TurnGameMessageReceiver extends GameSpaceMessageReceiver {
 	}
 	
 	@Override
-	protected boolean processEvent(Channel channel, MessageSender sender, byte event, ByteBuffer msg) {
-		if (super.processEvent(channel, sender, event, msg)) {
+	protected boolean processEvent(Channel channel, Client client, byte event, ByteBuffer msg) {
+		if (super.processEvent(channel, client, event, msg)) {
 			return true;
 		}
 		
@@ -53,7 +52,7 @@ public abstract class TurnGameMessageReceiver extends GameSpaceMessageReceiver {
 			boolean sessionTurn = true;//fixme uncoment: !sender.isHuman() || turnGame.isClientTurn((Client)sender);
 			boolean playMessage = isPlayMessage(event);
 			
-			String senderId = sender.isHuman() ? ((Client)sender).getName() : "robot";
+			String senderId = client.isHuman() ? client.getName() : Client.ROBOT_PREFIX;
 			DGSLogger.log("TurnGameMessageReceiver.processEvent(), playMessage: " + playMessage + " sessionTurn: " + sessionTurn + ", sender: " + senderId);
 	
 			if (!canSendMessage(event, sessionTurn, playMessage)) {
@@ -65,7 +64,7 @@ public abstract class TurnGameMessageReceiver extends GameSpaceMessageReceiver {
 				turnGame.onPrePlayEvent(event);
 			}
 	
-			receivedTurnMessage(channel, sender, event, turnGame, msg);
+			receivedTurnMessage(channel, client, event, turnGame, msg);
 			
 			if (playMessage) {
 				turnGame.onPosPlayEvent(event);
@@ -77,5 +76,5 @@ public abstract class TurnGameMessageReceiver extends GameSpaceMessageReceiver {
 	
 	public abstract boolean isPlayMessage(byte protocol);
 
-	protected abstract boolean receivedTurnMessage(Channel channel, MessageSender sender, byte event, TurnBasedGame game, ByteBuffer msg);
+	protected abstract boolean receivedTurnMessage(Channel channel, Client client, byte event, TurnBasedGame game, ByteBuffer msg);
 }

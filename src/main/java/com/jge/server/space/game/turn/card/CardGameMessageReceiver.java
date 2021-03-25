@@ -19,7 +19,7 @@ package com.jge.server.space.game.turn.card;
 
 import java.nio.ByteBuffer;
 
-import com.jge.server.client.MessageSender;
+import com.jge.server.client.Client;
 import com.jge.server.net.Channel;
 import com.jge.server.space.Space;
 import com.jge.server.space.game.turn.TurnBasedGame;
@@ -45,7 +45,7 @@ public abstract class CardGameMessageReceiver extends TurnGameMessageReceiver {
 	}
 
 	@Override
-	public boolean receivedTurnMessage(Channel channel, MessageSender sender, byte event, TurnBasedGame game, ByteBuffer msg) {
+	public boolean receivedTurnMessage(Channel channel, Client client, byte event, TurnBasedGame game, ByteBuffer msg) {
 		if (CardGameProtocol.MOVE_CARD_TO_DECK.getId() == event) {
 			byte cardCode = msg.get();
 			DGSLogger.log("Move card to deck. Card: " + cardCode);

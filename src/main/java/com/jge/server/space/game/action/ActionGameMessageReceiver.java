@@ -19,7 +19,7 @@ package com.jge.server.space.game.action;
 
 import java.nio.ByteBuffer;
 
-import com.jge.server.client.MessageSender;
+import com.jge.server.client.Client;
 import com.jge.server.net.Channel;
 import com.jge.server.space.game.GameSpaceMessageReceiver;
 
@@ -29,8 +29,8 @@ public class ActionGameMessageReceiver extends GameSpaceMessageReceiver {
 		super(actionBasedGame);
 	}
 	
-	protected boolean processEvent(Channel channel, MessageSender sender, byte event, ByteBuffer msg) {
-		if (super.processEvent(channel, sender, event, msg)) {
+	protected boolean processEvent(Channel channel, Client client, byte event, ByteBuffer msg) {
+		if (super.processEvent(channel, client, event, msg)) {
 			return true;
 		}
 		

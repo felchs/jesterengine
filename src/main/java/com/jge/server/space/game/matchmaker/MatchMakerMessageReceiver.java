@@ -20,32 +20,25 @@ package com.jge.server.space.game.matchmaker;
 import java.nio.ByteBuffer;
 
 import com.jge.server.client.Client;
-import com.jge.server.client.MessageSender;
 import com.jge.server.net.Channel;
 import com.jge.server.space.Space;
-import com.jge.server.space.SpaceIdMapping;
 import com.jge.server.space.SpaceMessageReceiver;
 import com.jge.server.utils.DGSLogger;
 
 public class MatchMakerMessageReceiver extends SpaceMessageReceiver {
-	private SpaceIdMapping spaceIdMapping;
-	
-	public MatchMakerMessageReceiver(Space space, SpaceIdMapping spaceIdMapping) {
+	public MatchMakerMessageReceiver(Space space) {
 		super(space);
-		this.spaceIdMapping = spaceIdMapping;
 	}
 
-	protected boolean processEvent(Channel channel, MessageSender sender, byte event, ByteBuffer msg) {
-		if (super.processEvent(channel, sender, event, msg)) {
+	protected boolean processEvent(Channel channel, Client client, byte event, ByteBuffer msg) {
+		if (super.processEvent(channel, client, event, msg)) {
 			return true;
 		}
 		
-		if (!sender.isHuman()) {
+		if (!client.isHuman()) {
 			return false;
 		}
 
-		Client client = (Client)sender;
-		
 		if (MatchProtocol.PLAY_NOW.getId() == event) {
 			playNow(channel, client, msg, false);
 			return true;
@@ -61,10 +54,12 @@ public class MatchMakerMessageReceiver extends SpaceMessageReceiver {
 	protected void playNow(Channel channel, Client client, ByteBuffer msg, boolean fillWithRobots) {
 		byte matchType = msg.get();
 		byte gameEnum = msg.get();
-		DGSLogger.log("LobbyMessageReceiver.playNow(), hasAvailableId: " + spaceIdMapping.hasAvailableId() + ", matchType: " + matchType);
+		DGSLogger.log("LobbyMessageReceiver.playNow() matchType: " + matchType);
 		
 		MatchMakerSpace matchMakder = (MatchMakerSpace)getSpace();
-
+		matchMakder.wantToPlayNow(client, matchType, gameEnum, fillWithRobots);
+		
+		/*
 		if (matchMakder.putClient(client)) {
 			DGSLogger.log("MatchMakerMessageReceiver.playNow() canPutOneMoreClient true");
 			
@@ -73,6 +68,7 @@ public class MatchMakerMessageReceiver extends SpaceMessageReceiver {
 			DGSLogger.log("LobbyMessageReceiver.playNow() !hasAvailableID");
 			matchMakder.sendCannotEnter(client);
 		}
+		*/
 	}
 
 

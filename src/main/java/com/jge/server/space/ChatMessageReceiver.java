@@ -20,7 +20,7 @@ package com.jge.server.space;
 
 import java.nio.ByteBuffer;
 
-import com.jge.server.client.MessageSender;
+import com.jge.server.client.Client;
 import com.jge.server.net.Channel;
 
 /**
@@ -47,13 +47,13 @@ public class ChatMessageReceiver extends SpaceMessageReceiver {
 	/**
 	 * {@inheritDoc}
 	 */	
-	public void receivedChannelMessage(Channel channel, MessageSender sender, ByteBuffer msg) {
+	public void receivedChannelMessage(Channel channel, Client client, ByteBuffer msg) {
 	}
 	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void receivedMessage(MessageSender sender, ByteBuffer msg) {
+	public void receivedMessage(Client client, ByteBuffer msg) {
 	}
 }

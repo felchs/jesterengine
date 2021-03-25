@@ -103,8 +103,7 @@ public class ClientListener implements ClientSessionListener {
 			}
 		} else {
 			if (msgReceiverRef.isActive()) {
-				MessageSender sender = (MessageSender)client;
-				msgReceiverRef.receivedMessage(sender, message);
+				msgReceiverRef.receivedMessage(client, message);
 			}
 		}
 	}

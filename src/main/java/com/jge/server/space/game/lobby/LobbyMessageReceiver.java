@@ -22,7 +22,6 @@ import java.util.logging.Level;
 
 import com.jge.server.ServerMessage;
 import com.jge.server.client.Client;
-import com.jge.server.client.MessageSender;
 import com.jge.server.net.Channel;
 import com.jge.server.space.Space;
 import com.jge.server.space.SpaceIdMapping;
@@ -38,17 +37,15 @@ public class LobbyMessageReceiver extends SpaceMessageReceiver {
 		this.spaceIdMapping = spaceIdMapping;
 	}
 
-	protected boolean processEvent(Channel channel, MessageSender sender, byte event, ByteBuffer msg) {
-		if (super.processEvent(channel, sender, event, msg)) {
+	protected boolean processEvent(Channel channel, Client client, byte event, ByteBuffer msg) {
+		if (super.processEvent(channel, client, event, msg)) {
 			return true;
 		}
 		
-		if (!sender.isHuman()) {
+		if (!client.isHuman()) {
 			return false;
 		}
 
-		Client client = (Client)sender;
-		
 		if (LobbyProtocol.PLAY_NOW.getId() == event) {
 			playNow(channel, client, msg, false);
 			return true;

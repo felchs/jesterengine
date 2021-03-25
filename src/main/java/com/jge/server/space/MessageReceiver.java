@@ -19,7 +19,7 @@ package com.jge.server.space;
 
 import java.nio.ByteBuffer;
 
-import com.jge.server.client.MessageSender;
+import com.jge.server.client.Client;
 import com.jge.server.net.Channel;
 
 /**
@@ -48,15 +48,15 @@ public interface MessageReceiver {
 	/**
 	 * Incoming {@link Channel}'s message 
 	 * @param channel the {@link Channel} that is sending the message
-	 * @param sender the {@link MessageSender} that send the message via {@link Channel}
+	 * @param client the {@link Client} that send the message via {@link Channel}
 	 * @param message the {@link ByteBuffer} message itself
 	 */
-	public void receivedChannelMessage(Channel channel, MessageSender sender, ByteBuffer message);
+	public void receivedChannelMessage(Channel channel, Client client, ByteBuffer message);
 
 	/**
-	 * Incoming {@link MessageSender}'s message 
-	 * @param sender the {@link MessageSender} that is sending the message
+	 * Incoming {@link Client}'s message 
+	 * @param client the {@link Client} that is sending the message
 	 * @param message the {@link ByteBuffer} message itself
 	 */
-	public void receivedMessage(MessageSender sender, ByteBuffer message);
+	public void receivedMessage(Client client, ByteBuffer message);
 } 

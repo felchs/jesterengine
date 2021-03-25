@@ -20,7 +20,6 @@ package com.jge.server.space;
 import java.nio.ByteBuffer;
 
 import com.jge.server.client.Client;
-import com.jge.server.client.MessageSender;
 import com.jge.server.net.Channel;
 
 /**
@@ -53,20 +52,19 @@ public abstract class SpaceMessageReceiver implements MessageReceiver {
 		return space;
 	}
 	
-	public void receivedChannelMessage(Channel channel, MessageSender sender, ByteBuffer msg) {
+	public void receivedChannelMessage(Channel channel, Client sender, ByteBuffer msg) {
 	}
 	
-	public void receivedMessage(MessageSender sender, ByteBuffer msg) {
+	public void receivedMessage(Client client, ByteBuffer msg) {
 		byte event = msg.get();	
-		processEvent(null, sender, event, msg);
+		processEvent(null, client, event, msg);
 	}
 
-	protected boolean processEvent(Channel channel, MessageSender sender, byte event, ByteBuffer msg) {
-		if (!sender.isHuman()) {
+	protected boolean processEvent(Channel channel, Client client, byte event, ByteBuffer msg) {
+		if (!client.isHuman()) {
 			return false;
 		}
 		
-		Client client = (Client)sender;
 		if (SpaceProtocol.ENTER.getId() == event) {
 			space.putClient(client);
 			return true;
